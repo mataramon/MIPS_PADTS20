@@ -166,6 +166,9 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
                 case S1F1_SUBU:
                     instr.name = MIPS32::SUBU;
                     break;
+                case S1F1_DIV:    
+                    instr.name = MIPS32::DIV; 
+                    break; 
                 default:
                     instr.name = MIPS32::IERR;
                     break;
@@ -212,7 +215,7 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
         case OP_BNEL:
             instr.name = MIPS32::BNEL;
             break;
-        case OP_LH:
+	case OP_LH:
             instr.name = MIPS32::LH;
             break;
             /******************************************************/
@@ -230,6 +233,12 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
         case OP_SLTI:
             instr.name = MIPS32::SLTI;
             break;
+        case OP_ANDI:    
+            instr.name = MIPS32::ANDI; 
+            break; 
+        case OP_LL:
+            instr.name = MIPS32::LL;
+            break;
         default:
             instr.name = MIPS32::IERR;
             break;
@@ -240,7 +249,6 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
 void mips32::execute(MIPS32::instr_t instr)
 {
 
-    uint8_t temp_byte;
     uint64_t temp64;
     uint32_t temp32;
     int32_t  target_offset;
@@ -312,6 +320,17 @@ void mips32::execute(MIPS32::instr_t instr)
             immediate=instr.immediate;
             rs_0 = GPR[instr.rs];
             GPR[instr.rt] = ( rs_0 < immediate ) ? 1 : 0;
+            next_PC = PC + 4;
+            cntr.arithmetic++;
+            break;
+
+        case MIPS32::DIV: // Divide Word
+            if (verbose) printf("Catched DIV -> 0x%08x: SUB r%d, r%d\n", PC, instr.rs, instr.rt);
+            int32_t q, r;
+            q = GPR[instr.rs] / GPR[instr.rt];
+            LO = q;
+            r = GPR[instr.rs] % GPR[instr.rt];
+            HI = r;
             next_PC = PC + 4;
             cntr.arithmetic++;
             break;
@@ -399,7 +418,8 @@ void mips32::execute(MIPS32::instr_t instr)
             } else ; //NullifyCurrentInstruction(); <- WHAT'S THIS? 
             //UPDATE: Dude, ";" nullifies the current instruction :v
             break;
-        case MIPS32::LH: //Load Halfword
+	    
+	case MIPS32::LH: //Load Halfword //TODO: debug this instruction
             if (verbose) printf("Catched LH -> \t\t 0x%08x: LH r%d, 0x%08x\n", PC, instr.rt, instr.offset);
             vAddr = instr.offset + GPR[instr.base];
             if ((vAddr & 0x00000001) != 0)
@@ -433,13 +453,13 @@ void mips32::execute(MIPS32::instr_t instr)
                 SignalException(MIPS32::AddressError);
             pAddr=AddressTranslation(vAddr, MIPS32::DATA, MIPS32::STORE);
             dataword=GPR[instr.rt];
-            if(verbose) printf("Data is 0x%08x\n", dataword);
+            if(verbose) printf("Data is %d, 0x%08x\n", dataword, dataword);
             StoreMemory(MIPS32::WORD, dataword, pAddr, vAddr, MIPS32::DATA);
             next_PC=PC+4;
 
             break;
 
-        case MIPS32::LW: // Correct :-)
+        case MIPS32::LW: // Correct :-) 
             if (verbose) printf("Catched LW->\t\t 0x%08x: LW r%d, r%d, 0x%08x\n", PC, instr.rs, instr.rt, instr.offset);
             vAddr=instr.offset + GPR[instr.base];
             if( (vAddr & 0x00000003) != 0 )
@@ -450,10 +470,28 @@ void mips32::execute(MIPS32::instr_t instr)
             next_PC=PC+4;
             break;
 
+        case MIPS32::LL: //Debug this
+            temp32 = instr.offset + GPR[instr.base];
+            vAddr = temp32;
+            if( (vAddr & 0x00000003) != 0 ){  
+                SignalException(MIPS32::AddressError); 
+            }
+            pAddr=AddressTranslation(vAddr, MIPS32::DATA, MIPS32::LOAD);
+            memword = LoadMemory(MIPS32::WORD,pAddr,vAddr,MIPS32::DATA);
+            GPR[instr.rt] = memword;
+            LLbit = 1;
+            next_PC=PC+4;
+        break;
             // ************************
             // Logical Instructions
             // ************************
-
+        case MIPS32::ANDI: // And Immediate
+            if (verbose) printf("Catched ANDI \t -> 0x%08x: ANDI r%d, r%d, r%d \n", PC, instr.rs, instr.rt, instr.immediate);
+                temp32 = instr.immediate & 0x0000FFFF;      
+            GPR[instr.rt] = GPR[instr.rs] & temp32;
+            next_PC = PC + 4;
+            cntr.logical++;
+        break;
             // *********************
             // Move Instructions
             // *********************
