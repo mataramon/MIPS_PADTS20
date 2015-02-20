@@ -54,8 +54,8 @@ namespace MIPS32 {
 #define OP_SWC2     0x3A
 #define OP_SDC1     0x3D
 #define OP_SDC2     0x3E
-
-	// Special1 function values
+#define OP_NOP      0x3F
+// Special1 function values
 #define S1F1_SLL     0x00
 #define S1F1_MOVCI   0x01
 #define S1F1_SRL     0x02

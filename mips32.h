@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include "mips32_defs.h"
+//#include <unistd.h>
 #include <windows.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -31,10 +33,10 @@ public:
 	void pic(uint8_t n); // PIC
 
 	// Load Memory
-	virtual int32_t LoadMemory(MIPS32::word_size_t word_size, uint32_t paddr, uint32_t vaddr, MIPS32::mem_type_t mem_type) = 0;
+	virtual int32_t LoadMemory(MIPS32::word_size_t word_size, uint32_t paddr, uint32_t vaddr, MIPS32::mem_type_t mem_type)=0;
 
 	// Store Memory
-	virtual void StoreMemory(MIPS32::word_size_t word_size, int32_t data, uint32_t paddr, uint32_t vaddr, MIPS32::mem_type_t mem_type) = 0;
+	virtual void StoreMemory(MIPS32::word_size_t word_size, int32_t data, uint32_t paddr, uint32_t vaddr, MIPS32::mem_type_t mem_type)=0;
 
 private:
 	// CPU Registres

@@ -27,6 +27,9 @@ int32_t platform_mips::LoadMemory(MIPS32::word_size_t word_size, uint32_t paddr,
 	mem_byte[2] = memory[(paddr & 0xFFFFFFFC) + 1];
 	mem_byte[3] = memory[(paddr & 0xFFFFFFFC) + 0];
 
+	/*for( int zaz=0; zaz<=3; zaz++){
+		printf("[Debug] MEM[%d] have 0x%08x\n", zaz, mem_byte[zaz]);
+	}*/
 	return mem;
 }
 

@@ -1,8 +1,14 @@
 #include "elf_reader.h"
+#include <stdio.h>
 
-void elf_reader::print_elf(const char* dmp_file)
-{
-	ptr_dfile = fopen(dmp_file, "w");
+#define	PT_NULL		0		/* Program header table entry unused */
+
+/*void*/ int elf_reader::print_elf(const char* dmp_file){
+	FILE *ptr_dfile;
+	if( ( ptr_dfile = fopen(dmp_file, "w")) == NULL ){
+	  printf("\n[1]:Error open file %s\n", dmp_file );
+	  return -1;
+	} else {
 
 	// ****************
 	// Print ELF Header
@@ -68,7 +74,7 @@ void elf_reader::print_elf(const char* dmp_file)
 	fprintf(ptr_dfile, "[Nr] Name\t\tType\t\tAddr     Off    Size\tES Flg Lk Inf Al");
 	for (int i = 0; i < Elf32_hdr.e_shnum; i++) {
 		char* hname = &headers_name[Elf32_Shd[i].sh_name];
-		fprintf(ptr_dfile, "\n[%2d] %s\t", i, hname);
+		fprintf(ptr_dfile, "\n[%2d] %s\t", i, hname); //TODO dont remove
 		switch (Elf32_Shd[i].sh_type) {
 		case SHT_NULL: fprintf(ptr_dfile, "\t\tNULL\t\t"); break;
 		case SHT_PROGBITS: fprintf(ptr_dfile, "PROGBITS\t"); break;
@@ -152,15 +158,19 @@ void elf_reader::print_elf(const char* dmp_file)
 		case STB_HIPROC: fprintf(ptr_dfile, "HIPROC\t"); break;
 		default: fprintf(ptr_dfile, "NODEF\t"); break;
 		}
-		fprintf(ptr_dfile, "\t%02x\t%04x %s", Elf32_Sym[i].st_other, Elf32_Sym[i].st_shndx, sname);
+		fprintf(ptr_dfile, "\t%02x\t%04x %s", Elf32_Sym[i].st_other, Elf32_Sym[i].st_shndx, sname); //TODO: Dont remove
 	}
 
 	fclose(ptr_dfile);
+	}
 }
 
-void elf_reader::read_elf(const char* elf_file)
+/*void*/ int elf_reader::read_elf(const char* elf_file)
 {
-	ptr_file = fopen(elf_file, "rb");
+	if( (ptr_file = fopen(elf_file, "rb")) == NULL ){
+	  printf("\n[2]: Error open file %s\n", elf_file);
+	  return -1;
+	} else {
 
 	// Read Header Table
 	fread(&Elf32_hdr, sizeof(Elf32_hdr), 1, ptr_file);
@@ -216,6 +226,7 @@ void elf_reader::read_elf(const char* elf_file)
 	start_ptr = find_symbol("_start");
 
 	fclose(ptr_file);
+	}
 }
 
 void elf_reader::format_elf32_sym(void)

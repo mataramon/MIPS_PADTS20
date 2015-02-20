@@ -2,6 +2,8 @@
 #define _ELF_READER_DEFS_H_
 
 #include <stdint.h>
+#include <string.h> 
+#include <stdio.h>
 
 // File Class
 #define ELFCLASSNONE 0

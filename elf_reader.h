@@ -32,8 +32,8 @@ public:
 	uint8_t* mem;
 	uint32_t mem_size;
 
-	void read_elf(const char* elf_file);
-	void print_elf(const char* dmp_file);
+	/*void*/int read_elf(const char* elf_file);
+	/*void*/ int print_elf(const char* dmp_file);
 	uint32_t find_symbol(const char* sym_name);
 };
 
