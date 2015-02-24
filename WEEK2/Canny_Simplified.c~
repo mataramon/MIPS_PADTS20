@@ -1,5 +1,5 @@
-unsigned char* src = (unsigned char*)( 0x00002000); //0x0
-unsigned char* dst = (unsigned char*)( 0x00004000);
+char* src = (char*)( 0x00002000); //0x0
+char* dst = (char*)( 0x00004000);
 
 void convolution(char* kernel, int ampl, int n_k_rows, int n_k_cols, int n_rows, int n_cols)
 {
