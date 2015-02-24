@@ -6,11 +6,12 @@
 using namespace cv;
 using namespace std;
 
-short* src; //= (short*)(IMAGE_SRC_OFFSET);
-short* dst; //= (short*)(IMAGE_DST_OFFSET);
+char* src; //= (short*)(IMAGE_SRC_OFFSET);
+char* dst; //= (short*)(IMAGE_DST_OFFSET);
 
 void convolution(char* kernel, int ampl, int n_k_rows, int n_k_cols, int n_rows, int n_cols)
 {
+	int cuenta =0;	
 	for (int rows = 0; rows < n_rows; rows++) {
 		for (int cols = 0; cols < n_cols; cols++) {
 			int acc = 0;
@@ -22,8 +23,10 @@ void convolution(char* kernel, int ampl, int n_k_rows, int n_k_cols, int n_rows,
 				}
 			}
 			dst[cols + (rows * n_cols)] = dst[cols + (rows * n_cols)] + (acc / ampl);
+			cuenta++;
 		}
 	}
+	cout << "Cuenta de convolution: " << cuenta << endl;
 }
 
 void sobel_gx(int width, int height)
@@ -59,11 +62,21 @@ void canny_simp(int width, int height)
 
 }
 
+int my_strlen(char *string)
+{
+	int length = 0;
+	for (length = 0; *string != '\0'; string++)
+		length++;
+	
+	return(length);
+}
+
+
 int main( int argc, char** argv )
 {
   
-	const char * f_SRC = "android.bmp";
-	const char * f_DST = "output_5.bmp";
+	const char * f_SRC = "si.bmp";
+	const char * f_DST = "si_8b_canny.bmp";
 
 	IplImage *img = cvLoadImage(f_SRC, CV_LOAD_IMAGE_GRAYSCALE);
 	IplImage *imgDst = cvLoadImage(f_SRC, CV_LOAD_IMAGE_GRAYSCALE);
@@ -76,8 +89,8 @@ int main( int argc, char** argv )
 	cout << "width " << img->width << endl;
 	cout << "height " << img->height << endl << endl;
 
-    src = (short*)(img->imageData);
-    dst = (short*)(imgDst->imageData);
+    src = (img->imageData);
+    dst = (imgDst->imageData);
     
 	char *sweepdata = imgDst->imageData;
 	int count=0;
@@ -85,6 +98,8 @@ int main( int argc, char** argv )
 	cout << "&img->Data: " << &img->imageData << endl;
 	cout << "&imgDst->Data: " << &imgDst->imageData << endl;
 	cout << "&src->Data: " << &src << endl;
+	cout << "byte Data Size: " << img->imageSize << endl;
+	cout << "byte Data Sizeof: " << my_strlen(*src) << endl;
 	cout << "&dst->Data: " << &dst << endl << endl;
 
     if(! img->imageData )                          
@@ -93,15 +108,14 @@ int main( int argc, char** argv )
         return -1;
     }
 	canny_simp(img->width, img->height);
-canny_simp(img->width, img->height);
-canny_simp(img->width, img->height);
-canny_simp(img->width, img->height);
-	/*while(*sweepdata != NULL){
+	while(*sweepdata != '\0'){
 		*sweepdata++;		
 		count++;		
 	//	cout << *sweepdata++;   // Sweeps all the content data of the image!
-	}*/
+	}
 
+	cout << "Cuenta de sweep: " << count << endl;
+	
    	// canny_simp(img->width, img->height);
 	//	canny_simp(img->width, img->height);
 
@@ -111,6 +125,7 @@ canny_simp(img->width, img->height);
 	cout << "&img->Data: " << &img->imageData << endl;
 	cout << "&imgDst->Data: " << &imgDst->imageData << endl;
 	cout << "&src->Data: " << &src << endl;
+	cout << "byte Data Size: " << imgDst->imageSize << endl;
 	cout << "&dst->Data: " << &dst << endl;
  	//cout<< "SizeofData: " << count << endl;
     return 0;
