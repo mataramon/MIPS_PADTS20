@@ -239,6 +239,9 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
         case OP_LL:
             instr.name = MIPS32::LL;
             break;
+		case OP_SB:
+			instr.name = MIPS32::SB;
+			break;
 
         default:
             instr.name = MIPS32::IERR;
@@ -252,6 +255,7 @@ void mips32::execute(MIPS32::instr_t instr)
 {
 
     uint8_t temp_byte;
+	uint8_t bytesel;
     uint64_t temp64;
     uint32_t temp32;
     int32_t  target_offset;
@@ -469,7 +473,16 @@ void mips32::execute(MIPS32::instr_t instr)
             next_PC=PC+4;
 
             break;
-
+		case MIPS32::SB: // Store Byte
+			if (verbose) printf("Catched SB -> %08x: SW r%d, r%d, 0x%08x\n", PC, instr.rt, instr.base, instr.offset);
+			vAddr = instr.offset + GPR[instr.base];
+			pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::STORE);
+			bytesel = ~(pAddr & 0x00000003);
+			dataword = GPR[instr.rt] << (8 * bytesel);
+			StoreMemory(MIPS32::BYTE, dataword, pAddr, vAddr, MIPS32::DATA);
+			next_PC = PC + 4;
+			//cntr.store++;
+			break;
         case MIPS32::LW: // Correct :-) 
             if (verbose) printf("Catched LW->\t\t 0x%08x: LW r%d, r%d, 0x%08x\n", PC, instr.rs, instr.rt, instr.offset);
             vAddr=instr.offset + GPR[instr.base];
