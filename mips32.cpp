@@ -215,7 +215,7 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
         case OP_BNEL:
             instr.name = MIPS32::BNEL;
             break;
-	case OP_LH:
+	    case OP_LH:
             instr.name = MIPS32::LH;
             break;
             /******************************************************/
@@ -239,9 +239,11 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
         case OP_LL:
             instr.name = MIPS32::LL;
             break;
+
         default:
             instr.name = MIPS32::IERR;
             break;
+
     }
     return instr;
 }
@@ -249,6 +251,7 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
 void mips32::execute(MIPS32::instr_t instr)
 {
 
+    uint8_t temp_byte;
     uint64_t temp64;
     uint32_t temp32;
     int32_t  target_offset;
@@ -419,18 +422,26 @@ void mips32::execute(MIPS32::instr_t instr)
             //UPDATE: Dude, ";" nullifies the current instruction :v
             break;
 	    
-	case MIPS32::LH: //Load Halfword //TODO: debug this instruction
-            if (verbose) printf("Catched LH -> \t\t 0x%08x: LH r%d, 0x%08x\n", PC, instr.rt, instr.offset);
-            vAddr = instr.offset + GPR[instr.base];
-            if ((vAddr & 0x00000001) != 0)
+	    case MIPS32::LH: //Load Halfword //TODO: debug this instruction
+                if (verbose) printf("Catched LH -> \t\t 0x%08x: LH r%d, 0x%08x\n", PC, instr.rt, instr.offset);
+                vAddr = instr.offset + GPR[instr.base];
+                if ((vAddr & 0x00000001) != 0)
                 SignalException(MIPS32::AddressError);
-            pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::LOAD);
-            memword = LoadMemory(MIPS32::HALFWORD, pAddr, vAddr, MIPS32::DATA);
-            temp_byte = vAddr & 0x00000003;
-            GPR[instr.rt] = memword << (temp_byte * 8);
-            next_PC = PC + 4;
-            cntr.control++;
+                pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::LOAD);
+                memword = LoadMemory(MIPS32::HALFWORD, pAddr, vAddr, MIPS32::DATA);
+                temp_byte = vAddr & 0x00000003;
+                GPR[instr.rt] = memword << (temp_byte * 8);
+                next_PC = PC + 4;
+                cntr.control++;
             break;
+        case MIPS32::LWL:
+            if (verbose) printf("Catched LWL -> \t\t 0x%08x: LH r%d, 0x%08x\n", PC, instr.rt, instr.offset);
+            vAddr = GPR[instr.offset] + GPR[instr.base];
+            pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::LOAD);
+
+            
+            break;
+
         case MIPS32::CLZ: // Count Leading Zeros in Word // TODO: Debug this implementation
             if (verbose) printf("Catched CLZ ->\t\t 0x%08x: CLZ r%d, r%d, r%d\n", PC, instr.rs, instr.rt, instr.rd);
             temp32 = GPR[instr.rs];

@@ -22,11 +22,26 @@ int32_t platform_mips::LoadMemory(MIPS32::word_size_t word_size, uint32_t paddr,
 	uint32_t mem;
 	uint8_t* mem_byte = (uint8_t*)(&mem);
 
-	mem_byte[0] = memory[(paddr & 0xFFFFFFFC) + 3];
-	mem_byte[1] = memory[(paddr & 0xFFFFFFFC) + 2];
-	mem_byte[2] = memory[(paddr & 0xFFFFFFFC) + 1];
-	mem_byte[3] = memory[(paddr & 0xFFFFFFFC) + 0];
-
+    switch (word_size) {
+        case MIPS32::BYTE:
+            mem_byte[0] = memory[(paddr & 0xFFFFFFFC) + 3];
+            mem_byte[1] = 0x00;
+            mem_byte[2] = 0x00;
+            mem_byte[3] = 0x00;
+            break;
+        case MIPS32::HALFWORD:
+            mem_byte[0] = memory[(paddr & 0xFFFFFFFC) + 3];
+            mem_byte[1] = memory[(paddr & 0xFFFFFFFC) + 2];
+            mem_byte[2] = 0x00;
+            mem_byte[3] = 0x00;
+            break;
+        case MIPS32::WORD:
+            mem_byte[0] = memory[(paddr & 0xFFFFFFFC) + 3];
+            mem_byte[1] = memory[(paddr & 0xFFFFFFFC) + 2];
+            mem_byte[2] = memory[(paddr & 0xFFFFFFFC) + 1];
+            mem_byte[3] = memory[(paddr & 0xFFFFFFFC) + 0];
+            break;
+    }
 	/*for( int zaz=0; zaz<=3; zaz++){
 		printf("[Debug] MEM[%d] have 0x%08x\n", zaz, mem_byte[zaz]);
 	}*/
@@ -38,10 +53,26 @@ void platform_mips::StoreMemory(MIPS32::word_size_t word_size, int32_t data, uin
 	uint32_t mem;
 	uint8_t* data_byte = (uint8_t*)(&data);
 
-	memory[(paddr & 0xFFFFFFFC) + 0] = data_byte[3];
-	memory[(paddr & 0xFFFFFFFC) + 1] = data_byte[2];
-	memory[(paddr & 0xFFFFFFFC) + 2] = data_byte[1];
-	memory[(paddr & 0xFFFFFFFC) + 3] = data_byte[0];
+    switch (word_size) {
+
+    case MIPS32::BYTE:
+        memory[(paddr & 0xFFFFFFFC) + 0] = data_byte[3];
+        memory[(paddr & 0xFFFFFFFC) + 1] = 0x00;
+        memory[(paddr & 0xFFFFFFFC) + 2] = 0x00;
+        memory[(paddr & 0xFFFFFFFC) + 3] = 0x00;
+        break;
+    case MIPS32::HALFWORD:
+        memory[(paddr & 0xFFFFFFFC) + 0] = data_byte[3];
+        memory[(paddr & 0xFFFFFFFC) + 1] = data_byte[2];
+        memory[(paddr & 0xFFFFFFFC) + 2] = 0x00;
+        memory[(paddr & 0xFFFFFFFC) + 3] = 0x00;
+    case MIPS32::WORD:
+        memory[(paddr & 0xFFFFFFFC) + 0] = data_byte[3];
+        memory[(paddr & 0xFFFFFFFC) + 1] = data_byte[2];
+        memory[(paddr & 0xFFFFFFFC) + 2] = data_byte[1];
+        memory[(paddr & 0xFFFFFFFC) + 3] = data_byte[0];
+        break;
+    }
 }
 
 void platform_mips::print_stats(const char* stats_file)
