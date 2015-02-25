@@ -1,0 +1,18 @@
+// Dummy for byte
+
+#include "stdio.h"
+
+int main()
+{
+	volatile char a = 0;
+	volatile char b = 0;
+	char i;
+
+	for (i = 0; i < 6; i++) {
+	  a = a + (a + 1);
+	}
+	b = a;
+	
+	printf("Resultado = %d \n",b);
+	return 0;
+}
