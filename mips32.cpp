@@ -239,6 +239,9 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
         case OP_LL:
             instr.name = MIPS32::LL;
             break;
+        case OP_SB:
+            instr.name = MIPS32::SB;
+            break;
 
         default:
             instr.name = MIPS32::IERR;
@@ -285,6 +288,7 @@ void mips32::execute(MIPS32::instr_t instr)
             GPR[instr.rd]=temp32;
             next_PC=PC+4;
             cntr.arithmetic++;
+            printf("ADDU BALE BERGA\n");
             break;
 
         case MIPS32::ADDI:
@@ -411,6 +415,10 @@ void mips32::execute(MIPS32::instr_t instr)
             // ************************************************
             // Load, Store, and Memory Control Instructions
             // ************************************************
+        case MIPS32::SB:
+            if (verbose) printf("Catched SB ->\t\t 0x%08x: SB r%d, 0x%08x\n", PC, instr.rt, instr.offset);
+            printf("SB BALE BERGA\n");
+            break;
         case MIPS32::LDC1:  //Load Doubleword to Floating Point // TODO: what NullifyCurrentInstruction() do?
             if (verbose) printf("Catched LDC1 ->\t\t 0x%08x: LDC1 r%d, r%d, 0x%08x\n", PC, instr.rs, instr.rt, instr.offset);
             target_offset16 = instr.offset;
@@ -506,6 +514,7 @@ void mips32::execute(MIPS32::instr_t instr)
             // *********************
             // Move Instructions
             // *********************
+        
         case MIPS32::MOVN: // Move Conditional on Not Zero
              if (verbose) printf("0x%08x: MOVN r%d, r%d, r%d \n", PC, instr.rs, instr.rt ,instr.rd);
              if(GPR[instr.rt] != 0)
