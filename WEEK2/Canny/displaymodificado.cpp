@@ -116,9 +116,6 @@ int main( int argc, char** argv )
 		cout <<  '-' <<*sweepdata << endl;   // Sweeps all the content data of the image!
 	}
 */
-	for(int i = 0; i<= 9216){
-		
-	}
 
 	cout << "Cuenta de sweep: " << count << endl;
 	

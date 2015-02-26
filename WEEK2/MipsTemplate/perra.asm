@@ -17,20 +17,23 @@ main:
 	addiu	$sp,$sp,-16
 	sw	$fp,12($sp)
 	move	$fp,$sp
-	sb	$0,4($fp)
-	sb	$0,5($fp)
+	sh	$0,4($fp)
+	sh	$0,6($fp)
 	sw	$0,0($fp)
 	j	.L2
 .L3:
-	lbu	$2,4($fp)
-	andi	$3,$2,0x00ff
-	lbu	$2,4($fp)
-	andi	$2,$2,0x00ff
+	lhu	$2,4($fp)
+	seh	$2,$2
+	andi	$3,$2,0xffff
+	lhu	$2,4($fp)
+	seh	$2,$2
+	andi	$2,$2,0xffff
 	addu	$2,$3,$2
-	andi	$2,$2,0x00ff
+	andi	$2,$2,0xffff
 	addiu	$2,$2,1
-	andi	$2,$2,0x00ff
-	sb	$2,4($fp)
+	andi	$2,$2,0xffff
+	seh	$2,$2
+	sh	$2,4($fp)
 	lw	$2,0($fp)
 	addiu	$2,$2,1
 	sw	$2,0($fp)
@@ -38,9 +41,9 @@ main:
 	lw	$2,0($fp)
 	slt	$2,$2,10
 	bne	$2,$0,.L3
-	lbu	$2,4($fp)
-	andi	$2,$2,0x00ff
-	sb	$2,5($fp)
+	lhu	$2,4($fp)
+	seh	$2,$2
+	sh	$2,6($fp)
  #APP
  # 11 "mips_fw.c" 1
 	syscall

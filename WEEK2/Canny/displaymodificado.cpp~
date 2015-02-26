@@ -108,12 +108,16 @@ int main( int argc, char** argv )
         return -1;
     }
 	canny_simp(img->width, img->height);
-	
+/*	// char *sweepdata = imgDst->imageData;
 	while(count <= 9216){
 		cout << *sweepdata;   // Sweeps all the content data of the image!
 		*sweepdata++= 0;		
 		count++;		
 		cout <<  '-' <<*sweepdata << endl;   // Sweeps all the content data of the image!
+	}
+*/
+	for(int i = 0; i<= 9216){
+		
 	}
 
 	cout << "Cuenta de sweep: " << count << endl;

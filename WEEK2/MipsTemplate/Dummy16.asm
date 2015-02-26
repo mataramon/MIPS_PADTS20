@@ -1,14 +1,5 @@
-	.file	1 "mips_fw.c"
-	.previous
-	.nan	legacy
-	.gnu_attribute 4, 1
 	.text
-	.align	2
 	.globl	main
-	.set	nomips16
-	.set	nomicromips
-	.ent	main
-	.type	main, @function
 main:
 	.frame	$fp,16,$31		# vars= 8, regs= 1/0, args= 0, gp= 0
 	.mask	0x40000000,-4
@@ -54,5 +45,3 @@ main:
 	addiu	$sp,$sp,16
 	j	$31
 	.end	main
-	.size	main, .-main
-	.ident	"GCC: (Sourcery CodeBench Lite 2014.11-21) 4.9.1"
