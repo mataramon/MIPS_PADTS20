@@ -4,11 +4,11 @@
 
 int main()
 {
-	volatile short a = 0;
-	volatile short b = 0;
+	volatile char a = 0;
+	volatile unsigned char b = 0;
 	short i;
 
-	for (i = 0; i < 7; i++) {
+	for (i = 0; i < 10; i++) {
 	  a = a + (a + 1);
 	}
 	b = a;

@@ -108,17 +108,20 @@ int main( int argc, char** argv )
         return -1;
     }
 	canny_simp(img->width, img->height);
-	while(*sweepdata != '\0'){
-		*sweepdata++;		
+/*	// char *sweepdata = imgDst->imageData;
+	while(count <= 9216){
+		cout << *sweepdata;   // Sweeps all the content data of the image!
+		*sweepdata++= 0;		
 		count++;		
-	//	cout << *sweepdata++;   // Sweeps all the content data of the image!
+		cout <<  '-' <<*sweepdata << endl;   // Sweeps all the content data of the image!
+	}
+*/
+	for(int i = 0; i<= 9216){
+		
 	}
 
 	cout << "Cuenta de sweep: " << count << endl;
 	
-   	// canny_simp(img->width, img->height);
-	//	canny_simp(img->width, img->height);
-
 	if(!cvSaveImage(f_DST,imgDst)) cout<<"Could not save: "<< f_DST << endl;
 
 	cout<< "Canny correctly applied" << endl;
@@ -127,6 +130,5 @@ int main( int argc, char** argv )
 	cout << "&src->Data: " << &src << endl;
 	cout << "byte Data Size: " << imgDst->imageSize << endl;
 	cout << "&dst->Data: " << &dst << endl;
- 	//cout<< "SizeofData: " << count << endl;
     return 0;
 }

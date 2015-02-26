@@ -4,9 +4,9 @@
 
 int main()
 {
-	volatile char a = 0;
-	volatile char b = 0;
-	char i;
+	volatile short a = 0;
+	volatile short b = 0;
+	short i;
 
 	for (i = 0; i < 6; i++) {
 	  a = a + (a + 1);
