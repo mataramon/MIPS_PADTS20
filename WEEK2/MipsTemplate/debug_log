@@ -1,0 +1,12 @@
+perra.elf
+
+*** MIPS32 Reset ***
+
+Platform reset
+Platform run
+Catched ADDIU 	-> 0x00000000: ADDIU r29, r29, r-16
+Catched SW 	-> 0x00000004: SW r29, r30, 0x0000000c
+	Data is 0, 0x00000000
+Catched ADDU 	-> 0x00000008: ADDU r29, r0, r30
+[MIPS Exception]: Invalid Instruction
+Platform run MIPS
