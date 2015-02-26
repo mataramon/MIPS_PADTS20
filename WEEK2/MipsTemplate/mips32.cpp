@@ -243,8 +243,19 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
             break;
 	    case OP_LBU :
 	        instr.name = MIPS32::LBU;
+			break;
 	    case OP_LB :
 	        instr.name = MIPS32::LB;
+			break;
+	    case OP_SH :
+	        instr.name = MIPS32::SH;
+			break;
+	    case OP_LHU :
+	        instr.name = MIPS32::LHU;
+			break;
+	    case OP_ORI :
+	        instr.name = MIPS32::ORI;
+			break;
 	    break;
         default:
             instr.name = MIPS32::IERR;
@@ -440,7 +451,7 @@ void mips32::execute(MIPS32::instr_t instr)
 	        pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::STORE);
 	        smemword = LoadMemory(MIPS32::BYTE, pAddr, vAddr, MIPS32::DATA);
 		    byte = vAddr & 0x00000003;
-	        byte = byte ^ 0x03;
+	        //byte = byte ^ 0x03;
             if (verbose) printf("\tbyte: %d \n", byte);
 		    stemp32 = smemword >> (8 * byte);	    
             GPR[instr.rt] = stemp32;
@@ -463,6 +474,47 @@ void mips32::execute(MIPS32::instr_t instr)
 	        next_PC = PC + 4;
             cntr.memory++;
 	    break;
+	    case MIPS32::SH: // Store Halfword TODO: debug this
+	        if (verbose) printf("Catched SH \t-> %08x: SH r%d, r%d, 0x%08x\n", PC, instr.rt, instr.base, instr.offset);
+	        vAddr = instr.offset + GPR[instr.base];
+			if (vAddr & 0x01) SignalException(MIPS32::AddressError);
+	        pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::STORE);
+	        bytesel = pAddr & 0x00000003; 
+	        //bytesel = bytesel ^ 0x03;
+		    if (verbose) printf("\tbytesel= %d \n", bytesel);
+		    if (verbose) printf("\tGPR[%d]= (Dec: %d, Hex: 0x%08x)\n", instr.rt, GPR[instr.rt], GPR[instr.rt]);
+	        dataword = GPR[instr.rt]  << (8 * bytesel); 
+            if (verbose) printf("\tData Raw:%d, Dec:%d, Hex:0x%08x\n", dataword, dataword>>(8*bytesel), dataword);        	        
+            StoreMemory(MIPS32::HALFWORD, dataword, pAddr, vAddr, MIPS32::DATA); 
+	        next_PC = PC + 4;
+	        cntr.memory++;
+		break;
+
+	    case MIPS32::LHU: // Load Byte Unsigned// TODO
+	        if (verbose) printf("Catched LHU \t-> 0x%08x: LHU r%d, r%d, 0x%08x\n", PC, instr.base, instr.rt, instr.offset);
+	        vAddr = instr.offset + GPR[instr.base];
+			if (vAddr & 0x01) SignalException(MIPS32::AddressError);	        	        
+			pAddr = AddressTranslation(vAddr, MIPS32::DATA, MIPS32::STORE);
+			memword = LoadMemory(MIPS32::HALFWORD, pAddr, vAddr, MIPS32::DATA);
+		    byte = vAddr & 0x00000003;
+	        //byte = byte ^ 0x03;
+            if (verbose) printf("\tbyte: %d \n", byte);
+		    temp32 = memword >> (8 * byte);	    
+            temp32 = temp32 & 0x000000FF;
+            GPR[instr.rt] = temp32;
+	        if (verbose) printf("\tContents Raw:%d, Dec:%d, Hex:0x%08x\n",memword, memword >> (8 * byte), memword);
+	        next_PC = PC + 4;
+            cntr.memory++;
+	    break;
+
+        case MIPS32::ORI:  //Load Doubleword to Floating Point // TODO: what NullifyCurrentInstruction() do?
+            if (verbose) printf("Catched ORI \t-> 0x%08x: ORI r%d, r%d, 0x%08x\n", PC, instr.rs, instr.rt, instr.immediate);
+			stemp32 = instr.immediate;			
+			GPR[instr.rt] = GPR[instr.rs] | stemp32;
+			//cout << "VALIO VERGA" << endl;            
+			next_PC = PC + 4;
+             
+            break;
 
         case MIPS32::LDC1:  //Load Doubleword to Floating Point // TODO: what NullifyCurrentInstruction() do?
             if (verbose) printf("Catched LDC1 \t-> 0x%08x: LDC1 r%d, r%d, 0x%08x\n", PC, instr.rs, instr.rt, instr.offset);
