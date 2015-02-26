@@ -12,7 +12,7 @@ run_debug:
 
 run_debug2: 
 	./platform perra.elf output_log verbose | tee debug_log
-	./asm2xspim.sh perra.elf
+	./asm2xspim.sh perra.asm
 
 pitudo:
 	make clean
