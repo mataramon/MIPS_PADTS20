@@ -1,15 +1,34 @@
+	.file	1 "Canny_Simplified.c"
+	.section .mdebug.abi32
+	.previous
+	.nan	legacy
+	.gnu_attribute 4, 1
 	.globl	src
+	.section	.sdata,"aw",@progbits
+	.align	2
+	.type	src, @object
+	.size	src, 4
 src:
 	.word	8192
 	.globl	dst
+	.align	2
+	.type	dst, @object
+	.size	dst, 4
 dst:
 	.word	16384
 	.text
+	.align	2
 	.globl	convolution
+	.set	nomips16
+	.set	nomicromips
+	.ent	convolution
+	.type	convolution, @function
 convolution:
 	.frame	$fp,40,$31		# vars= 32, regs= 1/0, args= 0, gp= 0
 	.mask	0x40000000,-4
 	.fmask	0x00000000,0
+	.set	noreorder
+	.set	nomacro
 	addiu	$sp,$sp,-40
 	sw	$fp,36($sp)
 	move	$fp,$sp
@@ -160,8 +179,12 @@ convolution:
 	j	$31
 	nop
 
+	.set	macro
+	.set	reorder
 	.end	convolution
+	.size	convolution, .-convolution
 	.rdata
+	.align	2
 .LC0:
 	.byte	-1
 	.byte	0
@@ -173,11 +196,18 @@ convolution:
 	.byte	0
 	.byte	1
 	.text
+	.align	2
 	.globl	sobel_gx
+	.set	nomips16
+	.set	nomicromips
+	.ent	sobel_gx
+	.type	sobel_gx, @function
 sobel_gx:
 	.frame	$fp,48,$31		# vars= 16, regs= 2/0, args= 24, gp= 0
 	.mask	0xc0000000,-4
 	.fmask	0x00000000,0
+	.set	noreorder
+	.set	nomacro
 	addiu	$sp,$sp,-48
 	sw	$31,44($sp)
 	sw	$fp,40($sp)
@@ -217,8 +247,12 @@ sobel_gx:
 	j	$31
 	nop
 
+	.set	macro
+	.set	reorder
 	.end	sobel_gx
+	.size	sobel_gx, .-sobel_gx
 	.rdata
+	.align	2
 .LC1:
 	.byte	-1
 	.byte	-2
@@ -230,11 +264,18 @@ sobel_gx:
 	.byte	2
 	.byte	1
 	.text
+	.align	2
 	.globl	sobel_gy
+	.set	nomips16
+	.set	nomicromips
+	.ent	sobel_gy
+	.type	sobel_gy, @function
 sobel_gy:
 	.frame	$fp,48,$31		# vars= 16, regs= 2/0, args= 24, gp= 0
 	.mask	0xc0000000,-4
 	.fmask	0x00000000,0
+	.set	noreorder
+	.set	nomacro
 	addiu	$sp,$sp,-48
 	sw	$31,44($sp)
 	sw	$fp,40($sp)
@@ -274,8 +315,16 @@ sobel_gy:
 	j	$31
 	nop
 
+	.set	macro
+	.set	reorder
 	.end	sobel_gy
+	.size	sobel_gy, .-sobel_gy
+	.align	2
 	.globl	main
+	.set	nomips16
+	.set	nomicromips
+	.ent	main
+	.type	main, @function
 main:
 	.frame	$fp,32,$31		# vars= 8, regs= 2/0, args= 16, gp= 0
 	.mask	0xc0000000,-4
@@ -306,3 +355,5 @@ main:
 	addiu	$sp,$sp,32
 	j	$31
 	.end	main
+	.size	main, .-main
+	.ident	"GCC: (Sourcery CodeBench Lite 2014.11-21) 4.9.1"

@@ -11,8 +11,11 @@ run_debug:
 	./platform test.elf output_log verbose | tee debug_log
 
 run_debug2: 
-	./platform perra.elf output_log verbose | tee debug_log
-	./asm2xspim.sh perra.asm
+	./platform Canny.elf output_log verbose | tee debug_log
+	./asm2xspim.sh Canny.asm
+
+valgrind:
+	valgrind ./platform perra.elf output_log verbose | tee debug_log
 
 pitudo:
 	make clean

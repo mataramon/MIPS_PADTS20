@@ -9,44 +9,53 @@ ELF Header:
   Version:					0x01
   Entry point address:			0x00000000
   Start of program headers:		0 (bytes into file)
-  Start of section headers:		428 (bytes into file)
+  Start of section headers:		1348 (bytes into file)
   Size of this header:			52 (bytes)
   Size of program headers:		0 (bytes)
   Number program headers:		0
   Size of section headers:		40 (bytes)
-  Number of section headers:	14
-  Section header string table index:	11
+  Number of section headers:	16
+  Section header string table index:	13
 
 Section Headers:
 [Nr] Name		Type		Addr     Off    Size	ES Flg Lk Inf Al
 [ 0] 			NULL		00000000 000000 000000  00  	0 0   0
-[ 1] .text	PROGBITS	00000000 000034 000094  00  AX	0 0   4
-[ 2] .rel.text	REL	00000000 00049c 000008  08  	12 1   4
-[ 3] .data	PROGBITS	00000000 0000c8 000000  00  WA	0 0   1
-[ 4] .bss		NOBITS		00000000 0000c8 000000  00  WA	0 0   1
-[ 5] .reginfo	NODEF		00000000 0000c8 000018  18  	0 0   4
-[ 6] .pdr	PROGBITS	00000000 0000e0 000020  00  	0 0   4
-[ 7] .rel.pdr	REL	00000000 0004a4 000008  08  	12 6   4
-[ 8] .mdebug.abi32	PROGBITS	00000000 000100 000000  00  	0 0   1
-[ 9] .comment	PROGBITS	00000000 000100 000031  01  	0 0   1
-[10] .gnu.attributes	NODEF		00000000 000131 000010  00  	0 0   1
-[11] .shstrtab	STRTAB		00000000 000141 000069  00  	0 0   1
-[12] .symtab	SYMTAB		00000000 0003dc 0000b0  10  	13 10   4
-[13] .strtab	STRTAB		00000000 00048c 000010  00  	0 0   1
+[ 1] .text	PROGBITS	00000000 000034 00039c  00  AX	0 0   4
+[ 2] .rel.text	REL	00000000 000924 0000a8  08  	14 1   4
+[ 3] .data	PROGBITS	00000000 0003d0 000000  00  WA	0 0   1
+[ 4] .bss		NOBITS		00000000 0003d0 000000  00  WA	0 0   1
+[ 5] .reginfo	NODEF		00000000 0003d0 000018  18  	0 0   4
+[ 6] .pdr	PROGBITS	00000000 0003e8 000080  00  	0 0   4
+[ 7] .rel.pdr	REL	00000000 0009cc 000020  08  	14 6   4
+[ 8] .mdebug.abi32	PROGBITS	00000000 000468 000000  00  	0 0   1
+[ 9] .sdata	PROGBITS	00000000 000468 000008  00  WAp	0 0   4
+[10] .rodata	PROGBITS	00000000 000470 000018  00  A	0 0   4
+[11] .comment	PROGBITS	00000000 000488 000031  01  	0 0   1
+[12] .gnu.attributes	NODEF		00000000 0004b9 000010  00  	0 0   1
+[13] .shstrtab	STRTAB		00000000 0004c9 000078  00  	0 0   1
+[14] .symtab	SYMTAB		00000000 0007c4 000120  10  	15 12   4
+[15] .strtab	STRTAB		00000000 0008e4 00003f  00  	0 0   1
 
 Program Headers:
   Type		Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg	Align
 
-Symbol table '.symtab' conatins 11 entries:
+Symbol table '.symtab' conatins 18 entries:
   Num:	Value		Size	Type	Bind		Vis	Ndx Name
   0:	00000000	0		NOTYPE	LOCAL		00	0000 
-  1:	00000000	0		FILE	LOCAL		00	fff1 mips_fw.c
+  1:	00000000	0		FILE	LOCAL		00	fff1 Canny_Simplified.c
   2:	00000000	0		SECTION	LOCAL		00	0001 
   3:	00000000	0		SECTION	LOCAL		00	0003 
   4:	00000000	0		SECTION	LOCAL		00	0004 
   5:	00000000	0		SECTION	LOCAL		00	0008 
-  6:	00000000	0		SECTION	LOCAL		00	0005 
-  7:	00000000	0		SECTION	LOCAL		00	0006 
-  8:	00000000	0		SECTION	LOCAL		00	0009 
-  9:	00000000	0		SECTION	LOCAL		00	000a 
-  10:	00000000	148		FUNC	GLOBAL		00	0001 main
+  6:	00000000	0		SECTION	LOCAL		00	0009 
+  7:	00000000	0		SECTION	LOCAL		00	000a 
+  8:	00000000	0		SECTION	LOCAL		00	0005 
+  9:	00000000	0		SECTION	LOCAL		00	0006 
+  10:	00000000	0		SECTION	LOCAL		00	000b 
+  11:	00000000	0		SECTION	LOCAL		00	000c 
+  12:	00000000	4		OBJECT	GLOBAL		00	0009 src
+  13:	00000004	4		OBJECT	GLOBAL		00	0009 dst
+  14:	00000000	532		FUNC	GLOBAL		00	0001 convolution
+  15:	00000214	148		FUNC	GLOBAL		00	0001 sobel_gx
+  16:	000002a8	148		FUNC	GLOBAL		00	0001 sobel_gy
+  17:	0000033c	96		FUNC	GLOBAL		00	0001 main

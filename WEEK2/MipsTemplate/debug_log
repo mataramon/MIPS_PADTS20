@@ -1,30 +1,9 @@
-perra.elf
+Canny.elf
 
 *** MIPS32 Reset ***
 
 Platform reset
 Platform run
-Catched ADDIU 	-> 0x00000000: ADDIU r29, r29, r-16
-Catched SW 	-> 0x00000004: SW r29, r30, 0x0000000c
-	Data is 0, 0x00000000
-Catched ADDU 	-> 0x00000008: ADDU r29, r0, r30
-Catched SH 	-> 0000000c: SH r0, r30, 0x00000004
-	bytesel= 0 
-	GPR[0]= (Dec: 0, Hex: 0x00000000)
-	Data Raw:0, Dec:0, Hex:0x00000000
-Catched SH 	-> 00000010: SH r0, r30, 0x00000006
-	bytesel= 2 
-	GPR[0]= (Dec: 0, Hex: 0x00000000)
-	Data Raw:0, Dec:0, Hex:0x00000000
-Catched SW 	-> 0x00000014: SW r30, r0, 0x00000000
-	Data is 0, 0x00000000
-Catched J 	-> 0x00000018: J 0x00000017
-Catched LW	-> 0x0000005c: LW r30, r2, 0x00000000
-Catched SLTI 	-> 0x00000060: SLTI r2, r2, r10
-Catched BNE 	-> 0x00000064: BNE r2, r0, 0xffffffee
-Catched NOP 	-> 0x0000001c: NOP
-Catched LHU 	-> 0x00000020: LHU r30, r2, 0x00000004
-	byte: 0 
-	Contents Raw:0, Dec:0, Hex:0x00000000
-[MIPS Exception]: Invalid Instruction
+identificamesta puto: 0xff0001fe
+Vales verga: 0x0000003f[MIPS Exception]: Invalid Instruction
 Platform run MIPS

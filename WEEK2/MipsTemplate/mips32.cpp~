@@ -124,7 +124,7 @@ MIPS32::instr_t mips32::decode(uint32_t idata)
                     instr.name = MIPS32::SLT;
                     break;
                 case S1F1_SLL:
-                    instr.name = MIPS32::SLL;
+                    instr.name = MIPS32::NOP;
                     break;
                 case S1F1_JR:
                     instr.name = MIPS32::JR;
