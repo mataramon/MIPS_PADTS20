@@ -6,8 +6,9 @@
 using namespace cv;
 using namespace std;
 
-char* src; //= (short*)(IMAGE_SRC_OFFSET);
-char* dst; //= (short*)(IMAGE_DST_OFFSET);
+int* src; // (IMAGE_SRC_OFFSET);
+int* dst; // (IMAGE_DST_OFFSET);
+int test = 4; // = 1; for normal operation // Remember tu use char * on src & dst
 
 void convolution(char* kernel, int ampl, int n_k_rows, int n_k_cols, int n_rows, int n_cols)
 {
@@ -17,12 +18,12 @@ void convolution(char* kernel, int ampl, int n_k_rows, int n_k_cols, int n_rows,
 			int acc = 0;
 			for (int k_rows = 0; k_rows < n_k_rows; k_rows++) {
 				for (int k_cols = 0; k_cols < n_k_cols; k_cols++) {
-					int src_col = ((cols + (k_cols - (n_k_cols / 2))) < 0) ? 0 : cols + (k_cols - (n_k_cols / 2));
-					int src_row = ((rows + (k_rows - (n_k_rows / 2))) < 0) ? 0 : rows + (k_rows - (n_k_rows / 2));
-					acc += kernel[k_cols + (k_rows * n_k_cols)] * src[src_col + (src_row * n_cols)];
+					int src_col = ((cols + (k_cols - (n_k_cols / (2*test))) < 0) ? 0 : cols + (k_cols - (n_k_cols / (2*test));
+					int src_row = ((rows + (k_rows - (n_k_rows / (2*test))) < 0) ? 0 : rows + (k_rows - (n_k_rows / (2*test));
+					acc += kernel[k_cols + (k_rows * n_k_cols)] * src[(src_col + (src_row * n_cols))/(1*test)];
 				}
 			}
-			dst[cols + (rows * n_cols)] = dst[cols + (rows * n_cols)] + (acc / ampl);
+			dst[(cols + (rows * n_cols))/(1*test)] = dst[(cols + (rows * n_cols))/(1*test)] + (acc / ampl);
 			cuenta++;
 		}
 	}
@@ -80,17 +81,12 @@ int main( int argc, char** argv )
 
 	IplImage *img = cvLoadImage(f_SRC, CV_LOAD_IMAGE_GRAYSCALE);
 	IplImage *imgDst = cvLoadImage(f_SRC, CV_LOAD_IMAGE_GRAYSCALE);
-	//IplImage *test = cvLoadImage(f_SRC, CV_LOAD_IMAGE_GRAYSCALE);        
-	
-	//Size s = img.size();
-    //Mat imageDst(s,CV_8UC1);
-    //imageDst = imread("./scarlet.bmp", CV_LOAD_IMAGE_GRAYSCALE); 
 
 	cout << "width " << img->width << endl;
 	cout << "height " << img->height << endl << endl;
 
-    src = (img->imageData);
-    dst = (imgDst->imageData);
+    src = (int *)(img->imageData);
+    dst = (int *)(imgDst->imageData);
     
 	char *sweepdata = imgDst->imageData;
 	int count=0;
@@ -99,7 +95,6 @@ int main( int argc, char** argv )
 	cout << "&imgDst->Data: " << &imgDst->imageData << endl;
 	cout << "&src->Data: " << &src << endl;
 	cout << "byte Data Size: " << img->imageSize << endl;
-	cout << "byte Data Sizeof: " << my_strlen(src) << endl;
 	cout << "&dst->Data: " << &dst << endl << endl;
 
     if(! img->imageData )                          
@@ -108,14 +103,6 @@ int main( int argc, char** argv )
         return -1;
     }
 	canny_simp(img->width, img->height);
-/*	// char *sweepdata = imgDst->imageData;
-	while(count <= 9216){
-		cout << *sweepdata;   // Sweeps all the content data of the image!
-		*sweepdata++= 0;		
-		count++;		
-		cout <<  '-' <<*sweepdata << endl;   // Sweeps all the content data of the image!
-	}
-*/
 
 	cout << "Cuenta de sweep: " << count << endl;
 	
