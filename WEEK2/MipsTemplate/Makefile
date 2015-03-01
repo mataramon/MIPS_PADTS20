@@ -1,4 +1,4 @@
-lall:
+all:
 	g++ -Wall -m32 -g -c -std=c++11 elf_reader.cpp
 	g++ -Wall -m32 -g -c -std=c++11 platform_mips.cpp
 	g++ -Wall -m32 -g -c -std=c++11 mips32.cpp
@@ -14,10 +14,13 @@ run_debug2:
 	./platform Canny.elf output_log verbose | tee debug_log
 	./asm2xspim.sh Canny.asm
 
+run_16:
+	./platform Dummy16.elf output_log verbose > debug_log
+
 valgrind:
 	valgrind ./platform perra.elf output_log verbose | tee debug_log
 
-pitudo:
+full:
 	make clean
 	make 
 	make run_debug2

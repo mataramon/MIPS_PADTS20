@@ -23,16 +23,19 @@ main:
 	j	.L2
 .L3:
 	lhu	$2,4($fp)
-	seh	$2,$2
+	sll	$2,$2,16
+	sra	$2,$2,16
 	andi	$3,$2,0xffff
 	lhu	$2,4($fp)
-	seh	$2,$2
+	sll	$2,$2,16
+	sra	$2,$2,16
 	andi	$2,$2,0xffff
 	addu	$2,$3,$2
 	andi	$2,$2,0xffff
 	addiu	$2,$2,1
 	andi	$2,$2,0xffff
-	seh	$2,$2
+	sll	$2,$2,16
+	sra	$2,$2,16
 	sh	$2,4($fp)
 	lw	$2,0($fp)
 	addiu	$2,$2,1
@@ -42,7 +45,8 @@ main:
 	slt	$2,$2,10
 	bne	$2,$0,.L3
 	lhu	$2,4($fp)
-	seh	$2,$2
+	sll	$2,$2,16
+	sra	$2,$2,16
 	sh	$2,6($fp)
  #APP
  # 11 "mips_fw.c" 1
